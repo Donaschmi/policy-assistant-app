@@ -8,9 +8,9 @@
 
         <div class="flex flex-col px-60 pt-6">
             <form>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click.prevent="showCreatePolicy = true">
+                <jet-button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-6" @click.prevent="showCreatePolicy = true">
                     New policy
-                </button>
+                </jet-button>
 
                 <jet-dialog-modal :show="showCreatePolicy" @close="showCreatePolicy = false">
                     <template #content>
@@ -33,13 +33,8 @@
                                 </th>
 
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Action
+                                    Action(s)
                                 </th>
-
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actor
-                                </th>
-
                                 <th scope="col" class="relative px-6 py-3">
                                     <span class="sr-only">Détail</span>
                                 </th>
@@ -64,6 +59,7 @@
 <script>
 import AppLayout from '@/Layouts/AppLayout'
 import PolicyItem from './Item'
+import JetButton from '@/Jetstream/Button'
 import JetDangerButton from "../../Jetstream/DangerButton";
 import JetSecondaryButton from "../../Jetstream/SecondaryButton";
 import JetDialogModal from "../../Jetstream/DialogModal";
@@ -77,7 +73,8 @@ export default {
         PolicyItem,
         JetDangerButton,
         JetSecondaryButton,
-        JetDialogModal
+        JetDialogModal,
+        JetButton
     },
     data(){
         return {

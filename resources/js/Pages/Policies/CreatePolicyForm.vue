@@ -75,7 +75,7 @@
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6" v-if="currentTab==='action'">
-                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <div class="w-full md:w-2/5 px-3 mb-6 md:mb-0">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
                         Actor
                     </label>
@@ -86,7 +86,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0" v-if="trigger_type">
+                <div class="w-full md:w-2/5 px-3 mb-6 md:mb-0" v-if="trigger_type">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
                         Action
                     </label>
@@ -96,6 +96,23 @@
                             <option v-for="action in actions" :value="action">{{ action.name }}</option>
                         </select>
                     </div>
+                </div>
+                <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0 m-auto" >
+                    <jet-button @click.prevent="addActionActorPair" :disabled="!(currentAction && currentActor)">
+                        +
+                    </jet-button>
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6" v-if="currentTab==='action'">
+                <div class="w-full px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
+                        Actions
+                    </label>
+                    <ul class="relative">
+                        <li v-for="action_actor in actionActorPairs">
+                            {{action_actor.action.name + ' ' + action_actor.actor.name}}
+                        </li>
+                    </ul>
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-2">
@@ -110,7 +127,7 @@
                     </jet-button>
                 </div>
                 <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                    <jet-button v-if="currentAction && currentActor">
+                    <jet-button v-if="actionActorPairs.length > 0">
                         Save
                     </jet-button>
                 </div>
@@ -143,7 +160,7 @@ export default {
             actors: [],
             currentActor: null,
             currentAction: null,
-            actionActorPair: []
+            actionActorPairs: []
         }
     },
     computed: {
@@ -174,7 +191,7 @@ export default {
             if (! (this.trigger_type))
                 return;
             let data = new FormData();
-            let action_actor = JSON.stringify({actor: this.currentActor, action: this.currentAction})
+            let action_actor = JSON.stringify(this.actionActorPairs)
             data.append('action_actor', action_actor)
             let e = this.currentEvent()
             if (e.length === 0)
@@ -208,6 +225,12 @@ export default {
             this.attribute = null;
             this.operator = null;
             this.value = null;
+        },
+
+        addActionActorPair(){
+            this.actionActorPairs.push({actor: this.currentActor, action: this.currentAction})
+            this.currentActor = null;
+            this.currentAction = null;
         }
     },
     watch: {

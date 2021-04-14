@@ -22,22 +22,11 @@
 
     <td class="px-6 py-4 whitespace-nowrap">
         <div class="flex items-center">
-            <div class="">
-                <a class="text-sm font-medium text-gray-900" href="#">
-                    {{ policy.action_actor[0].action.name }}
-                </a>
-            </div>
-        </div>
-    </td>
-
-
-    <td class="px-6 py-4 whitespace-nowrap">
-        <div class="flex items-center">
-            <div class="">
-                <a class="text-sm font-medium text-gray-900" href="#">
-                    {{ policy.action_actor[0].actor.name }}
-                </a>
-            </div>
+            <ul class="">
+                <li class="text-sm font-medium text-gray-900" v-for="action_actor in policy.action_actor">
+                    {{ action_actor.action.name + ' ' + action_actor.actor.name}}
+                </li>
+            </ul>
         </div>
     </td>
 

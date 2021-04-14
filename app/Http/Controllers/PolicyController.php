@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Action;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
 use Laravel\Jetstream\Jetstream;
@@ -25,7 +26,7 @@ class PolicyController extends Controller
         );
     }
 
-    public function store(Request $request, User $user)
+    public function store(Request $request, User $user): JsonResponse
     {
         $request->validate([
             'event_id'=> ['required', 'int']
@@ -33,11 +34,14 @@ class PolicyController extends Controller
         $policy = $user->policies()->firstOrCreate([
             'event_id' => $request->get('event_id')
         ]);
-        $action_actor = json_decode($request->get('action_actor'), true);
-        $policy->action_actor()->create([
-            'action_id'=>$action_actor["action"]["id"],
-            'actor_id'=>$action_actor["actor"]["id"]
-        ]);
+        $action_actor_array = json_decode($request->get('action_actor'), true);
+        \Log::debug($action_actor_array);
+        foreach($action_actor_array as $action_actor){
+            $policy->action_actor()->create([
+                'action_id'=>$action_actor["action"]["id"],
+                'actor_id'=>$action_actor["actor"]["id"]
+            ]);
+        }
         return response()->json($policy->load('action_actor', 'event'));
     }
 }
