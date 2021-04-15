@@ -75,6 +75,19 @@
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6" v-if="currentTab==='action'">
+                <div class="w-full px-3 mb-6 md:mb-0">
+                    <jet-button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-6" @click.prevent="showCreateActor = true">
+                        Add new actor
+                    </jet-button>
+
+                    <jet-dialog-modal :show="showCreateActor" @close="showCreateActor = false">
+                        <template #content>
+                            <create-actor-form :tenant="tenant" :actors="actors"/>
+                        </template>
+                    </jet-dialog-modal>
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6" v-if="currentTab==='action'">
                 <div class="w-full md:w-2/5 px-3 mb-6 md:mb-0">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
                         Actor
@@ -82,11 +95,11 @@
                     <div class="relative">
                         <select v-model="currentActor" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
                             <option disabled value="">Choisissez</option>
-                            <option v-for="actor in actors" :value="actor">{{ actor.name }}</option>
+                            <option v-for="actor in userActors" :value="actor">{{ actor.fullname }}</option>
                         </select>
                     </div>
                 </div>
-                <div class="w-full md:w-2/5 px-3 mb-6 md:mb-0" v-if="trigger_type">
+                <div class="w-full md:w-2/5 px-3 mb-6 md:mb-0">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
                         Action
                     </label>
@@ -110,7 +123,7 @@
                     </label>
                     <ul class="relative">
                         <li v-for="action_actor in actionActorPairs">
-                            {{action_actor.action.name + ' ' + action_actor.actor.name}}
+                            {{action_actor.action.name + ' ' + action_actor.actor.fullname}}
                         </li>
                     </ul>
                 </div>
@@ -138,14 +151,19 @@
 
 <script>
 import JetButton from '@/Jetstream/Button'
+import JetDialogModal from '@/Jetstream/DialogModal'
+import CreateActorForm from "../Actors/CreateActorForm";
 
 export default {
-    props: ["tenant", "actions"],
+    props: ["tenant", "actions", "actors"],
     components: {
-      JetButton
+        JetButton,
+        JetDialogModal,
+        CreateActorForm
     },
     data(){
         return {
+            showCreateActor: false,
             trigger_type: null,
             triggers: null,
             attributes: null,
@@ -157,10 +175,11 @@ export default {
             value: null,
             events: [],
             currentTab:'event',
-            actors: [],
+            userActors: [],
             currentActor: null,
             currentAction: null,
-            actionActorPairs: []
+            actionActorPairs: [],
+
         }
     },
     computed: {
@@ -183,8 +202,9 @@ export default {
             this.events = response.data
         })
         await axios.get(`/actors?tenant_id=${this.tenant.id})`).then(response => {
-            this.actors = response.data
+            this.userActors = response.data
         })
+        this.emitter.on('new-actor', this.addActor)
     },
     methods: {
         async submit() {
@@ -231,6 +251,11 @@ export default {
             this.actionActorPairs.push({actor: this.currentActor, action: this.currentAction})
             this.currentActor = null;
             this.currentAction = null;
+        },
+
+        addActor(args){
+            this.userActors.push(args.actor)
+            this.showCreateActor = false
         }
     },
     watch: {

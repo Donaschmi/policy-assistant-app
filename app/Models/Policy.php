@@ -33,9 +33,6 @@ class Policy extends Model
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope('action_actor', function($builder){
-            $builder->with(['action_actor']);
-        });
     }
 
     /**
@@ -55,4 +52,5 @@ class Policy extends Model
     {
         return $this->hasMany(PolicyActionActor::class);
     }
+
 }

@@ -38,6 +38,8 @@ Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('users/{user}/policies', [PolicyController::class, 'index'])->name('user.policies');
 Route::post('users/{user}/policies', [PolicyController::class, 'store'])->name('user.policies.store');
 Route::get('/users/{user}/policies/{policy}', [PolicyController::class, 'show'])->name('user.policy');
+Route::delete('/policies/{policy}', [PolicyController::class, 'destroy'])->name('policy.destroy');
+Route::post('/users/{user}/actors', [ActorController::class, 'store'])->name('actor.store');
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('/actors', [ActorController::class, 'index'])->name('actors.index');
 Route::get('/devices', [DeviceController::class, 'index'])->name('devices.index');

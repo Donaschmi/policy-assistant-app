@@ -13,8 +13,24 @@ class ActorController extends Controller
         if ($request->has('tenant_id'))
         {
             // Should filter available actor by tenant
-            return response()->json(Actor::all());
+            return response()->json(User::findOrFail($request->get('tenant_id'))->actors);
         }
         return response()->json(Actor::all());
+    }
+
+    public function store(Request $request, User $user)
+    {
+        $request->validate([
+            'actor_id'=> ['required', 'int'],
+            'fullname'=> ['required'],
+            'phone_number'=> ['required'],
+        ]);
+        $actor = $user->actors()->updateOrCreate([
+            'actor_id'=>$request->get('actor_id')
+        ], [
+            'fullname' => $request->get('fullname'),
+            'phone_number' => $request->get('phone_number'),
+        ]);
+        return response()->json($actor);
     }
 }

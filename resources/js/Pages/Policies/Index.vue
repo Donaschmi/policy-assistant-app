@@ -14,7 +14,7 @@
 
                 <jet-dialog-modal :show="showCreatePolicy" @close="showCreatePolicy = false">
                     <template #content>
-                        <create-policy-form :tenant="tenant" :actions="actions"/>
+                        <create-policy-form :tenant="tenant" :actions="actions" :actors="actors"/>
                     </template>
                 </jet-dialog-modal>
             </form>
@@ -66,7 +66,7 @@ import JetDialogModal from "../../Jetstream/DialogModal";
 import PolicyForm from './CreatePolicyForm'
 import CreatePolicyForm from "./CreatePolicyForm";
 export default {
-    props: ['tenant', 'actions'],
+    props: ['tenant', 'actions', 'actors'],
     components: {
         CreatePolicyForm,
         AppLayout,
@@ -85,12 +85,19 @@ export default {
     created() {
         this.policies = this.tenant.policies
         this.emitter.on('new-policy', this.addPolicy)
+        this.emitter.on('remove-policy', this.removePolicy)
     },
 
     methods: {
         addPolicy(args){
             this.policies.push(args.policy)
             this.showCreatePolicy = false
+        },
+        removePolicy(args){
+            let id = args.policy_id
+            this.policies = this.policies.filter((item) => {
+                return item.id !== id;
+            })
         }
     }
 

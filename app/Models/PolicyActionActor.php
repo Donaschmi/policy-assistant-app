@@ -28,6 +28,10 @@ class PolicyActionActor extends Model
         'actor_id',
     ];
 
+    protected $appends = [
+        'user_actor'
+    ];
+
     public $timestamps = false;
 
     protected static function boot()
@@ -37,9 +41,6 @@ class PolicyActionActor extends Model
             $builder->with(['action']);
         });
 
-        static::addGlobalScope('actor', function($builder){
-            $builder->with(['actor']);
-        });
     }
 
     /**
@@ -64,5 +65,10 @@ class PolicyActionActor extends Model
     public function actor(): BelongsTo
     {
         return $this->belongsTo(Actor::class);
+    }
+
+    public function getUserActorAttribute()
+    {
+        return $this->policy->user->actors()->where('actor_id', $this->actor_id)->first();
     }
 }
