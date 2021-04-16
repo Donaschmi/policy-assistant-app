@@ -36,6 +36,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
 Route::get('users/{user}/policies', [PolicyController::class, 'index'])->name('user.policies');
 Route::post('users/{user}/policies', [PolicyController::class, 'store'])->name('user.policies.store');
 Route::get('/users/{user}/policies/{policy}', [PolicyController::class, 'show'])->name('user.policy');

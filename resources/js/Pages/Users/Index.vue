@@ -7,6 +7,17 @@
         </template>
 
         <div class="flex flex-col px-60 pt-6">
+            <form>
+                <jet-button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-6" @click.prevent="showCreateUser = true">
+                    New user
+                </jet-button>
+
+                <jet-dialog-modal :show="showCreateUser" @close="showCreateUser = false">
+                    <template #content>
+                        <create-user-form/>
+                    </template>
+                </jet-dialog-modal>
+            </form>
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -29,7 +40,7 @@
                             </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                            <tr v-for="user in users">
+                            <tr v-for="user in tenants">
                                 <user-item :tenant="user"/>
                             </tr>
 
@@ -46,12 +57,33 @@
 <script>
 import AppLayout from '@/Layouts/AppLayout'
 import UserItem from './Item'
+import JetButton from '@/Jetstream/Button'
+import JetDialogModal from "../../Jetstream/DialogModal";
+import CreateUserForm from "./CreateUserForm";
 export default {
     props: ['users'],
 
     components: {
         AppLayout,
-        UserItem
+        UserItem,
+        JetButton,
+        JetDialogModal,
+        CreateUserForm
     },
+    data(){
+        return {
+            showCreateUser: false,
+            tenants: this.users
+        }
+    },
+    created() {
+        this.emitter.on('new-user', this.addNewUser)
+    },
+    methods: {
+        addNewUser(args) {
+            this.tenants.push(args.user)
+            this.showCreateUser = false
+        }
+    }
 }
 </script>

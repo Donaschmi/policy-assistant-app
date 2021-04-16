@@ -63,7 +63,6 @@ import JetButton from '@/Jetstream/Button'
 import JetDangerButton from "../../Jetstream/DangerButton";
 import JetSecondaryButton from "../../Jetstream/SecondaryButton";
 import JetDialogModal from "../../Jetstream/DialogModal";
-import PolicyForm from './CreatePolicyForm'
 import CreatePolicyForm from "./CreatePolicyForm";
 export default {
     props: ['tenant', 'actions', 'actors'],

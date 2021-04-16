@@ -35,11 +35,17 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+           'name' => ['required', 'unique:users'],
+        ]);
+        $user = User::factory()->create([
+            'name' => $request->get('name')
+        ]);
+        return response()->json($user->load('policies'));
     }
 
     /**

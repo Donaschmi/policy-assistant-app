@@ -154,6 +154,7 @@ import JetButton from '@/Jetstream/Button'
 import JetDialogModal from '@/Jetstream/DialogModal'
 import CreateActorForm from "../Actors/CreateActorForm";
 
+
 export default {
     props: ["tenant", "actions", "actors"],
     components: {
