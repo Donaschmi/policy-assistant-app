@@ -22,7 +22,7 @@ class PolicyController extends Controller
     {
         return Jetstream::inertia()->render($request, 'Policies/Index',
             [
-                'tenant' => $user->load(['policies.event.triggerable', 'policies.action_actor']),
+                'tenant' => $user->load(['policies.event.triggerable', 'policies.action_actor.userActor']),
                 'actions' => Action::all(),
                 'actors' => Actor::all()
             ]
@@ -41,10 +41,10 @@ class PolicyController extends Controller
         foreach($action_actor_array as $action_actor){
             $policy->action_actor()->create([
                 'action_id'=>$action_actor["action"]["id"],
-                'actor_id'=>$action_actor["actor"]["actor_id"]
+                'actor_id'=>$action_actor["actor"]["id"]
             ]);
         }
-        return response()->json($policy->load('action_actor', 'event'));
+        return response()->json($policy->load('action_actor.userActor', 'event'));
     }
 
     public function destroy(Request $request, Policy $policy)

@@ -10,9 +10,7 @@ class UserActor extends Model
 {
     use HasFactory;
 
-    protected $table = 'user_actor';
-
-    public $timestamps = false;
+    protected $table = 'user_actors';
 
     protected $fillable = [
         'tenant_id',

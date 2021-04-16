@@ -13,12 +13,14 @@ class CreateUserActorTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_actor', function (Blueprint $table) {
+        Schema::create('user_actors', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tenant_id')->constrained('users');
             $table->foreignId('actor_id')->constrained('actors');
             $table->string('fullname')->nullable();
             $table->string('phone_number')->nullable();
+            $table->softDeletes($column = 'deleted_at', $precision = 0);
+            $table->timestamps();
         });
     }
 

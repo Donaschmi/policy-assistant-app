@@ -13,6 +13,7 @@ class CreatePolicyActionActorTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('policy_action_actor');
         Schema::create('policy_action_actor', function (Blueprint $table) {
             $table->foreignId('policy_id')
                 ->constrained('policies')
@@ -23,7 +24,7 @@ class CreatePolicyActionActorTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->foreignId('actor_id')
-                ->constrained('actors');
+                ->constrained('user_actors');
             $table->index('policy_id');
         });
     }
