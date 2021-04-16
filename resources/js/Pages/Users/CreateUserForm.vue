@@ -53,7 +53,6 @@ export default {
                 this.emitter.emit('new-user', {user: response.data})
             }
             catch (e){
-                console.log(e)
                 this.errors = e.response.data.errors
             }
         }
