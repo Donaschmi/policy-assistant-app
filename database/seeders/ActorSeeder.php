@@ -16,40 +16,52 @@ class ActorSeeder extends Seeder
     {
         DB::table('actors')->insert([
             [
-                'name' => 'fils_1'
+                'name' => 'fils_1',
+                'sentence' => 'votre fils'
             ],
             [
-                'name' => 'fils_2'
+                'name' => 'fils_2',
+                'sentence' => 'votre fils'
             ],
             [
-                'name' => 'fils_3'
+                'name' => 'fils_3',
+                'sentence' => 'votre fils'
             ],
             [
-                'name' => 'fille_1'
+                'name' => 'fille_1',
+                'sentence' => 'votre fille'
             ],
             [
-                'name' => 'fille_2'
+                'name' => 'fille_2',
+                'sentence' => 'votre fille'
             ],
             [
-                'name' => 'fille_3'
+                'name' => 'fille_3',
+                'sentence' => 'votre fille'
             ],
             [
-                'name' => 'voisin_1'
+                'name' => 'voisin_1',
+                'sentence' => 'votre voisin'
             ],
             [
-                'name' => 'voisin_2'
+                'name' => 'voisin_2',
+                'sentence' => 'votre voisin'
             ],
             [
-                'name' => 'voisin_3'
+                'name' => 'voisin_3',
+                'sentence' => 'votre voisin'
             ],
             [
-                'name' => 'police'
+                'name' => 'police',
+                'sentence' => 'la police'
             ],
             [
-                'name' => 'pompier'
+                'name' => 'pompier',
+                'sentence' => 'les pompiers'
             ],
             [
-                'name' => 'ambulance'
+                'name' => 'ambulance',
+                'sentence' => 'l\'hôpital'
             ],
         ]);
     }

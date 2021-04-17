@@ -13,7 +13,7 @@ class EventController extends Controller
         if ($request->has('tenant_id'))
         {
             $user = User::findOrFail($request->get('tenant_id'));
-            return response()->json(Event::whereNotIn('id', $user->policies()->pluck('event_id'))->get());
+            return response()->json($user->uncoveredEvents());
         }
         return response()->json(Event::all());
     }

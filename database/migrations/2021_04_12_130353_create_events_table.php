@@ -19,6 +19,7 @@ class CreateEventsTable extends Migration
             $table->string('attribute');
             $table->string('operator');
             $table->string('value');
+            $table->string('sentence');
         });
     }
 

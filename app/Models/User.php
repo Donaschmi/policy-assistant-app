@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,6 +12,11 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 
+
+/**
+ * Class User
+ * @package App\Models
+ */
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -68,5 +74,15 @@ class User extends Authenticatable
     public function actors(): HasMany
     {
         return $this->hasMany(UserActor::class, 'tenant_id');
+    }
+
+    public function uncoveredEvents(): Collection
+    {
+        return Event::whereNotIn('id', $this->policies()->pluck('event_id'))->get();
+    }
+
+    public function coveredEvents(): Collection
+    {
+        return Event::whereIn('id', $this->policies()->pluck('event_id'))->get();
     }
 }

@@ -47,6 +47,38 @@ class PolicyController extends Controller
         return response()->json($policy->load('action_actor.userActor', 'event'));
     }
 
+
+    public function storeFromQuestion(Request $request, User $user): JsonResponse
+    {
+        $request->validate([
+            'events'=> ['required']
+        ]);
+
+        $events = json_decode($request->get('events'), true);
+
+        $policies = array();
+
+        foreach ($events as $event)
+        {
+            if (!is_array($event["answer"]))
+                continue;
+
+            $policy = $policy = $user->policies()->firstOrCreate([
+                'event_id' => $event["id"]
+            ]);
+
+            $policy->action_actor()->create([
+                'action_id' => $event["action"]["id"],
+                'actor_id' => $event["answer"]["id"]
+            ]);
+
+            $policy->load('action_actor.userActor', 'event');
+
+            array_push($policies, $policy);
+        }
+        return response()->json(collect($policies));
+    }
+
     public function destroy(Request $request, Policy $policy)
     {
         $policy->delete();

@@ -8,13 +8,36 @@
 
         <div class="flex flex-col px-60 pt-6">
             <form>
-                <jet-button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-6" @click.prevent="showCreatePolicy = true">
-                    New policy
-                </jet-button>
-
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle mb-6" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        New policy
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <jet-button
+                            class="dropdown-item bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded text-black-50"
+                            @click.prevent="showCreatePolicy = true"
+                            style="color:black!important"
+                        >
+                            Manual
+                        </jet-button>
+                        <jet-button
+                            class="dropdown-item bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded text-black-50"
+                            @click.prevent="showRandomQuestions = true"
+                            style="color:black!important"
+                        >
+                            Random questions
+                        </jet-button>
+                    </div>
+                </div>
                 <jet-dialog-modal :show="showCreatePolicy" @close="showCreatePolicy = false">
                     <template #content>
                         <create-policy-form :tenant="tenant" :actions="actions" :actors="actors"/>
+                    </template>
+                </jet-dialog-modal>
+
+                <jet-dialog-modal :show="showRandomQuestions" @close="showRandomQuestions = false">
+                    <template #content>
+                        <random-questions-form :tenant="tenant" :actors="actors"/>
                     </template>
                 </jet-dialog-modal>
             </form>
@@ -44,7 +67,6 @@
                             <tr v-for="policy in policies">
                                 <policy-item :tenant="tenant" :policy="policy"/>
                             </tr>
-
                             <!-- More items... -->
                             </tbody>
                         </table>
@@ -52,7 +74,6 @@
                 </div>
             </div>
         </div>
-
     </app-layout>
 </template>
 
@@ -64,6 +85,7 @@ import JetDangerButton from "../../Jetstream/DangerButton";
 import JetSecondaryButton from "../../Jetstream/SecondaryButton";
 import JetDialogModal from "../../Jetstream/DialogModal";
 import CreatePolicyForm from "./CreatePolicyForm";
+import RandomQuestionsForm from "./RandomQuestionsForm";
 export default {
     props: ['tenant', 'actions', 'actors'],
     components: {
@@ -73,17 +95,20 @@ export default {
         JetDangerButton,
         JetSecondaryButton,
         JetDialogModal,
-        JetButton
+        JetButton,
+        RandomQuestionsForm
     },
     data(){
         return {
             policies: null,
-            showCreatePolicy: false
+            showCreatePolicy: false,
+            showRandomQuestions: false
         }
     },
     created() {
         this.policies = this.tenant.policies
         this.emitter.on('new-policy', this.addPolicy)
+        this.emitter.on('new-policies', this.addPolicies)
         this.emitter.on('remove-policy', this.removePolicy)
     },
 
@@ -91,6 +116,10 @@ export default {
         addPolicy(args){
             this.policies.push(args.policy)
             this.showCreatePolicy = false
+        },
+        addPolicies(args){
+            this.policies = this.policies.concat(args.policies)
+            this.showRandomQuestions = false
         },
         removePolicy(args){
             let id = args.policy_id

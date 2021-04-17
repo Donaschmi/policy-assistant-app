@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Class UserActor
+ * @package App\Models
+ *
+ * @property-read string $sentence
+ */
 class UserActor extends Model
 {
     use HasFactory;
@@ -35,5 +41,10 @@ class UserActor extends Model
     public function actor(): BelongsTo
     {
         return $this->belongsTo(Actor::class);
+    }
+
+    public function sentence(): string
+    {
+        return $this->actor->sentence;
     }
 }

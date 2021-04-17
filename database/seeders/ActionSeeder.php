@@ -16,13 +16,16 @@ class ActionSeeder extends Seeder
     {
         DB::table('actions')->insert([
             [
-                'name' => 'call'
+                'name' => 'call',
+                'sentence' => 'appeler'
             ],
             [
-                'name' => 'notification'
+                'name' => 'notification',
+                'sentence' => 'notifier'
             ],
             [
-                'name' => 'message'
+                'name' => 'message',
+                'sentence' => 'envoyer un sms à'
             ]
         ]);
     }

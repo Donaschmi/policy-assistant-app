@@ -5,12 +5,12 @@
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                     <jet-label for="name" value="name" />
                     <div v-if="errors" class="">
-                    <div v-for="(v, k) in errors" :key="k">
-                        <p v-for="error in v" :key="error" class="text-sm">
-                            {{ error }}
-                        </p>
+                        <div v-for="(v, k) in errors" :key="k">
+                            <p v-for="error in v" :key="error" class="text-sm">
+                                {{ error }}
+                            </p>
+                        </div>
                     </div>
-                </div>
                     <jet-input id="name" class="mt-1 block w-full" v-model="name" required/>
                 </div>
             </div>
