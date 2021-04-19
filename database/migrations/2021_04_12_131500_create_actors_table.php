@@ -15,8 +15,8 @@ class CreateActorsTable extends Migration
     {
         Schema::create('actors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tenant_id')->constrained('users');
-            $table->foreignId('actor_type_id')->constrained('actor_types');
+            $table->foreignId('tenant_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('actor_type_id')->constrained('actor_types')->onDelete('cascade');
             $table->string('fullname')->nullable();
             $table->string('phone_number')->nullable();
             $table->softDeletes($column = 'deleted_at', $precision = 0);

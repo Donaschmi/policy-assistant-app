@@ -24,7 +24,8 @@ class CreatePolicyActionActorTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->foreignId('actor_id')
-                ->constrained('actors');
+                ->constrained('actors')
+                ->onDelete('cascade');
             $table->index('policy_id');
         });
     }

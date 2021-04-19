@@ -21,9 +21,10 @@ class PolicyController extends Controller
      */
     public function index(Request $request, User $user): Response
     {
+
         return Jetstream::inertia()->render($request, 'Policies/Index',
             [
-                'tenant' => $user->load(['policies.event.triggerable', 'policies.action_actor.actor']),
+                'tenant' => $user->load(['policies.event.triggerable', 'policies.action_actor.actor', 'actors']),
                 'actions' => Action::all(),
                 'actor_types' => ActorType::all()
             ]

@@ -19,7 +19,9 @@ class CreatePoliciesTable extends Migration
                 ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->foreignId('event_id');
+            $table->foreignId('event_id')
+                ->constrained('events')
+                ->onDelete('cascade');;
             $table->index('tenant_id');
         });
     }

@@ -202,7 +202,7 @@ export default {
         await axios.get(`/events?tenant_id=${this.tenant.id})`).then(response => {
             this.events = response.data
         })
-        await axios.get(`/actors?tenant_id=${this.tenant.id})`).then(response => {
+        await axios.get(`/users/${this.tenant.id}/actors?json=true)`).then(response => {
             this.actors = response.data
         })
         this.emitter.on('new-actor', this.addActor)

@@ -3,19 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Actor;
+use App\Models\ActorType;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Laravel\Jetstream\Jetstream;
 
 class ActorController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, User $user)
     {
-        if ($request->has('tenant_id'))
+        if ($request->get('json'))
         {
-            // Should filter available actor by tenant
-            return response()->json(User::findOrFail($request->get('tenant_id'))->actors);
+            return response()->json($user->actors);
         }
-        return response()->json(Actor::all());
+        return Jetstream::inertia()->render($request, 'Actors/Index',
+            [
+                'tenant' => $user->load(['actors']),
+                'actor_types' => ActorType::all()
+            ]
+        );
     }
 
     public function store(Request $request, User $user)
@@ -31,6 +37,12 @@ class ActorController extends Controller
             'fullname' => $request->get('fullname'),
             'phone_number' => $request->get('phone_number'),
         ]);
-        return response()->json($actor);
+        return response()->json($actor->load('actorType'));
+    }
+
+    public function destroy(Request $request, Actor $actor)
+    {
+        $actor->delete();
+        return response()->json([],200);
     }
 }

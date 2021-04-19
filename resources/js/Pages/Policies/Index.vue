@@ -28,6 +28,9 @@
                             Random questions
                         </jet-button>
                     </div>
+                    <inertia-link :href="route('user.actors', {user: tenant.id})" class="btn btn-primary mb-6 ml-6">
+                        Actors
+                    </inertia-link>
                 </div>
                 <jet-dialog-modal :show="showCreatePolicy" @close="showCreatePolicy = false">
                     <template #content>
@@ -100,7 +103,7 @@ export default {
     },
     data(){
         return {
-            policies: null,
+            policies: [],
             showCreatePolicy: false,
             showRandomQuestions: false
         }
@@ -114,6 +117,7 @@ export default {
 
     methods: {
         addPolicy(args){
+            console.log(this.policies)
             this.policies.push(args.policy)
             this.showCreatePolicy = false
         },
