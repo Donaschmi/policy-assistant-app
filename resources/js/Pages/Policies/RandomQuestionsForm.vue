@@ -9,7 +9,7 @@
 
                 <jet-dialog-modal :show="showCreateActor" @close="showCreateActor = false">
                     <template #content>
-                        <create-actor-form :tenant="tenant" :actors="actors"/>
+                        <create-actor-form :tenant="tenant" :actor_types="actor_types"/>
                     </template>
                 </jet-dialog-modal>
             </div>
@@ -29,8 +29,8 @@
                     <option disabled value="">Choisissez</option>
                     <option v-if="question.actor" :value="question.actor">Oui</option>
                     <option v-if="question.actor">Non</option>
-                    <option v-if="question.actor_1" :value="question.actor_1">{{ question.actor_1.actor.sentence }}</option>
-                    <option v-if="question.actor_2" :value="question.actor_2">{{ question.actor_2.actor.sentence }}</option>
+                    <option v-if="question.actor_1" :value="question.actor_1">{{ question.actor_1.actor_type.sentence }}</option>
+                    <option v-if="question.actor_2" :value="question.actor_2">{{ question.actor_2.actor_type.sentence }}</option>
                 </select>
             </div>
 
@@ -52,7 +52,7 @@ import CreateActorForm from "../Actors/CreateActorForm";
 
 
 export default {
-    props: ["tenant", "actors"],
+    props: ["tenant", "actor_types"],
     components: {
         JetButton,
         JetDialogModal,

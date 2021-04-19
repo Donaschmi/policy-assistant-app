@@ -73,7 +73,7 @@ class User extends Authenticatable
 
     public function actors(): HasMany
     {
-        return $this->hasMany(UserActor::class, 'tenant_id');
+        return $this->hasMany(Actor::class, 'tenant_id');
     }
 
     public function uncoveredEvents(): Collection

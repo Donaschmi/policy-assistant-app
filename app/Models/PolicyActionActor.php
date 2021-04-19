@@ -54,17 +54,9 @@ class PolicyActionActor extends Model
         return $this->belongsTo(Action::class);
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function actor(): BelongsTo
     {
-        $this->userActor->actor;
-    }
-
-    public function userActor(): BelongsTo
-    {
-        return $this->belongsTo(UserActor::class, 'actor_id');
+        return $this->belongsTo(Actor::class);
     }
 
 }

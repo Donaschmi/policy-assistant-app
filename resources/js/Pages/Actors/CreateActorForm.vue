@@ -9,7 +9,7 @@
                     <div class="relative">
                         <select v-model="actor_id" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
                             <option disabled value="">Choisissez</option>
-                            <option v-for="a in actors" :value="a.id">{{ a.name }}</option>
+                            <option v-for="a in actor_types" :value="a.id">{{ a.name }}</option>
                         </select>
                     </div>
                 </div>
@@ -40,7 +40,7 @@ import JetInput from '@/Jetstream/Input'
 import JetLabel from '@/Jetstream/Label'
 
 export default {
-    props: ["tenant", "actions", "actors"],
+    props: ["tenant", "actions", "actor_types"],
     components: {
         JetButton,
         JetDialogModal,
@@ -54,10 +54,13 @@ export default {
             phone_number: "",
         }
     },
+    created() {
+        console.log(this.actor_types)
+    },
     methods: {
         async submit() {
             await axios.post(`/users/${this.tenant.id}/actors`, {
-                actor_id: this.actor_id,
+                actor_type_id: this.actor_id,
                 fullname: this.fullname,
                 phone_number: this.phone_number
 

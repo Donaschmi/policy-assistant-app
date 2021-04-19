@@ -82,7 +82,7 @@
 
                     <jet-dialog-modal :show="showCreateActor" @close="showCreateActor = false">
                         <template #content>
-                            <create-actor-form :tenant="tenant" :actors="actors"/>
+                            <create-actor-form :tenant="tenant" :actor_types="actor_types"/>
                         </template>
                     </jet-dialog-modal>
                 </div>
@@ -95,7 +95,7 @@
                     <div class="relative">
                         <select v-model="currentActor" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
                             <option disabled value="">Choisissez</option>
-                            <option v-for="actor in userActors" :value="actor">{{ actor.fullname }}</option>
+                            <option v-for="actor in actors" :value="actor">{{ actor.fullname + ' (' + actor.actor_type.name + ')'}}</option>
                         </select>
                     </div>
                 </div>
@@ -156,7 +156,7 @@ import CreateActorForm from "../Actors/CreateActorForm";
 
 
 export default {
-    props: ["tenant", "actions", "actors"],
+    props: ["tenant", "actions", "actor_types"],
     components: {
         JetButton,
         JetDialogModal,
@@ -176,7 +176,7 @@ export default {
             value: null,
             events: [],
             currentTab:'event',
-            userActors: [],
+            actors: [],
             currentActor: null,
             currentAction: null,
             actionActorPairs: [],
@@ -203,7 +203,7 @@ export default {
             this.events = response.data
         })
         await axios.get(`/actors?tenant_id=${this.tenant.id})`).then(response => {
-            this.userActors = response.data
+            this.actors = response.data
         })
         this.emitter.on('new-actor', this.addActor)
     },
@@ -211,12 +211,12 @@ export default {
         async submit() {
             if (! (this.trigger_type))
                 return;
+            let e = this.currentEvent()
+            if (e.length === 0)
+                return;
             let data = new FormData();
             let action_actor = JSON.stringify(this.actionActorPairs)
             data.append('action_actor', action_actor)
-            let e = this.currentEvent()
-            if (e.length === 0)
-                return
             data.append('event_id', e.pop()["id"])
             await axios.post(`/users/${this.tenant.id}/policies`, data).then(response => {
                 this.emitter.emit('new-policy', {policy: response.data})
@@ -255,7 +255,7 @@ export default {
         },
 
         addActor(args){
-            this.userActors.push(args.actor)
+            this.actors.push(args.actor)
             this.showCreateActor = false
         }
     },

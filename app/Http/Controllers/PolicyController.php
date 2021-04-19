@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Action;
 use App\Models\Actor;
+use App\Models\ActorType;
 use App\Models\Policy;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -24,7 +25,7 @@ class PolicyController extends Controller
             [
                 'tenant' => $user->load(['policies.event.triggerable', 'policies.action_actor.userActor']),
                 'actions' => Action::all(),
-                'actors' => Actor::all()
+                'actor_types' => ActorType::all()
             ]
         );
     }
@@ -44,7 +45,7 @@ class PolicyController extends Controller
                 'actor_id'=>$action_actor["actor"]["id"]
             ]);
         }
-        return response()->json($policy->load('action_actor.userActor', 'event'));
+        return response()->json($policy->load('action_actor.actor', 'event'));
     }
 
 
@@ -72,7 +73,7 @@ class PolicyController extends Controller
                 'actor_id' => $event["answer"]["id"]
             ]);
 
-            $policy->load('action_actor.userActor', 'event');
+            $policy->load('action_actor.actor', 'event');
 
             array_push($policies, $policy);
         }

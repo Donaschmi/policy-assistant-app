@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ActorSeeder extends Seeder
+class ActorTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class ActorSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('actors')->insert([
+        DB::table('actor_types')->insert([
             [
                 'name' => 'fils_1',
                 'sentence' => 'votre fils'

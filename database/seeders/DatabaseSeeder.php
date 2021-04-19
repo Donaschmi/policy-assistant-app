@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             ActionSeeder::class,
             UserSeeder::class,
             DeviceSeeder::class,
-            ActorSeeder::class,
+            ActorTypeSeeder::class,
             EventSeeder::class
         ]);
     }

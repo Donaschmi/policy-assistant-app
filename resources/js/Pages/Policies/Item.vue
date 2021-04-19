@@ -13,7 +13,7 @@
         <div class="flex items-center">
             <div class="">
                 <a class="text-sm font-medium text-gray-900" href="#">
-                    {{ eventString(policy.event) }}
+                    {{ formatEvent(policy.event) }}
                 </a>
             </div>
         </div>
@@ -24,7 +24,7 @@
         <div class="flex items-center">
             <ul class="">
                 <li class="text-sm font-medium text-gray-900" v-for="action_actor in policy.action_actor">
-                    {{ action_actor.action.name + ' ' + action_actor.user_actor.fullname}}
+                    {{ action_actor.action.name + ' ' + action_actor.actor.fullname}}
                 </li>
             </ul>
         </div>
@@ -54,7 +54,7 @@ export default {
     computed: {
     },
     methods: {
-        eventString(e) {
+        formatEvent(e) {
             return e.triggerable.name + ':' + e.attribute + ' ' + e.operator + ' ' + e.value
         },
         async remove() {

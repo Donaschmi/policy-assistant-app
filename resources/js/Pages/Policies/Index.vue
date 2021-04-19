@@ -31,13 +31,13 @@
                 </div>
                 <jet-dialog-modal :show="showCreatePolicy" @close="showCreatePolicy = false">
                     <template #content>
-                        <create-policy-form :tenant="tenant" :actions="actions" :actors="actors"/>
+                        <create-policy-form :tenant="tenant" :actions="actions" :actor_types="actor_types"/>
                     </template>
                 </jet-dialog-modal>
 
                 <jet-dialog-modal :show="showRandomQuestions" @close="showRandomQuestions = false">
                     <template #content>
-                        <random-questions-form :tenant="tenant" :actors="actors"/>
+                        <random-questions-form :tenant="tenant" :actor_types="actor_types"/>
                     </template>
                 </jet-dialog-modal>
             </form>
@@ -87,7 +87,7 @@ import JetDialogModal from "../../Jetstream/DialogModal";
 import CreatePolicyForm from "./CreatePolicyForm";
 import RandomQuestionsForm from "./RandomQuestionsForm";
 export default {
-    props: ['tenant', 'actions', 'actors'],
+    props: ['tenant', 'actions', 'actor_types'],
     components: {
         CreatePolicyForm,
         AppLayout,

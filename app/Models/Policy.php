@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Policy extends Model
 {
@@ -51,6 +52,11 @@ class Policy extends Model
     public function action_actor(): HasMany
     {
         return $this->hasMany(PolicyActionActor::class);
+    }
+
+    public function actors(): HasManyThrough
+    {
+        return $this->hasManyThrough(Actor::class, PolicyActionActor::class);
     }
 
 }
