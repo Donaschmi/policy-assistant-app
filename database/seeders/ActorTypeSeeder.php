@@ -63,6 +63,10 @@ class ActorTypeSeeder extends Seeder
                 'name' => 'ambulance',
                 'sentence' => 'l\'hôpital'
             ],
+            [
+                'name' => 'carer',
+                'sentence' => 'votre aide-soignant'
+            ],
         ]);
     }
 }

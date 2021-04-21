@@ -27,6 +27,13 @@
                         >
                             Random questions
                         </jet-button>
+                        <jet-button
+                            class="dropdown-item bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded text-black-50"
+                            style="color:black!important"
+                            @click.prevent="showDialogue = true"
+                        >
+                            Dialogue
+                        </jet-button>
                     </div>
                     <inertia-link :href="route('user.actors', {user: tenant.id})" class="btn btn-primary mb-6 ml-6">
                         Actors
@@ -43,34 +50,39 @@
                         <random-questions-form :tenant="tenant" :actor_types="actor_types"/>
                     </template>
                 </jet-dialog-modal>
+
+                <jet-dialog-modal :show="showDialogue" @close="showDialogue = false">
+                    <template #content>
+                        <dialogue-form :tenant="tenant" :actor_types="actor_types"/>
+                    </template>
+                </jet-dialog-modal>
             </form>
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    ID
-                                </th>
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        ID
+                                    </th>
 
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Event
-                                </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Event
+                                    </th>
 
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Action(s)
-                                </th>
-                                <th scope="col" class="relative px-6 py-3">
-                                    <span class="sr-only">Détail</span>
-                                </th>
-                            </tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Action(s)
+                                    </th>
+                                    <th scope="col" class="relative px-6 py-3">
+                                        <span class="sr-only">Détail</span>
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                            <tr v-for="policy in policies">
-                                <policy-item :tenant="tenant" :policy="policy"/>
-                            </tr>
-                            <!-- More items... -->
+                                <tr v-for="policy in policies">
+                                    <policy-item :tenant="tenant" :policy="policy"/>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -84,11 +96,13 @@
 import AppLayout from '@/Layouts/AppLayout'
 import PolicyItem from './Item'
 import JetButton from '@/Jetstream/Button'
-import JetDangerButton from "../../Jetstream/DangerButton";
-import JetSecondaryButton from "../../Jetstream/SecondaryButton";
-import JetDialogModal from "../../Jetstream/DialogModal";
-import CreatePolicyForm from "./CreatePolicyForm";
-import RandomQuestionsForm from "./RandomQuestionsForm";
+import JetDangerButton from "../../Jetstream/DangerButton"
+import JetSecondaryButton from "../../Jetstream/SecondaryButton"
+import JetDialogModal from "../../Jetstream/DialogModal"
+import CreatePolicyForm from "./CreatePolicyForm"
+import RandomQuestionsForm from "./RandomQuestionsForm"
+import DialogueForm from "./DialogueForm"
+
 export default {
     props: ['tenant', 'actions', 'actor_types'],
     components: {
@@ -99,13 +113,15 @@ export default {
         JetSecondaryButton,
         JetDialogModal,
         JetButton,
-        RandomQuestionsForm
+        RandomQuestionsForm,
+        DialogueForm
     },
     data(){
         return {
             policies: [],
             showCreatePolicy: false,
-            showRandomQuestions: false
+            showRandomQuestions: false,
+            showDialogue: false
         }
     },
     created() {

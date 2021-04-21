@@ -42,6 +42,30 @@ class EventSeeder extends Seeder
             ],
             [
                 'triggerable_type' => Device::class,
+                'triggerable_id' => Device::whereName('monitoring')->first()->id,
+                'attribute' => 'weight',
+                'operator' => '==',
+                'value' => 'strong increase',
+                'sentence' => 'vous prenez beaucoup de poids'
+            ],
+            [
+                'triggerable_type' => Device::class,
+                'triggerable_id' => Device::whereName('monitoring')->first()->id,
+                'attribute' => 'weight',
+                'operator' => '==',
+                'value' => 'strong decrease',
+                'sentence' => 'vous perdez beaucoup de poids'
+            ],
+            [
+                'triggerable_type' => Device::class,
+                'triggerable_id' => Device::whereName('monitoring')->first()->id,
+                'attribute' => 'sleep',
+                'operator' => '==',
+                'value' => 'anomalous',
+                'sentence' => 'vous avez une période de sommeil anormale'
+            ],
+            [
+                'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('motion')->first()->id,
                 'attribute' => 'event',
                 'operator' => '==',
@@ -55,6 +79,14 @@ class EventSeeder extends Seeder
                 'operator' => '==',
                 'value' => 'inactive',
                 'sentence' => 'vous restez dans une position inactive trop longtemps'
+            ],
+            [
+                'triggerable_type' => Device::class,
+                'triggerable_id' => Device::whereName('agenda')->first()->id,
+                'attribute' => 'visit_last_month',
+                'operator' => '<',
+                'value' => '2',
+                'sentence' => 'vous n\'avez pas reçu de visite depuis longtemps'
             ],
         ]);
     }

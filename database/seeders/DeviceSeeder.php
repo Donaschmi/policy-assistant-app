@@ -23,6 +23,9 @@ class DeviceSeeder extends Seeder
             ],
             [
                 'name' => 'camera'
+            ],
+            [
+                'name' => 'agenda'
             ]
         ]);
     }
