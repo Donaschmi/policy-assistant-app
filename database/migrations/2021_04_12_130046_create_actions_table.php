@@ -16,6 +16,7 @@ class CreateActionsTable extends Migration
         Schema::create('actions', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->boolean('assignable')->default(false);
             $table->string('sentence');
         });
     }

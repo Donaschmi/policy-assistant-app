@@ -24,7 +24,12 @@ class PolicyController extends Controller
 
         return Jetstream::inertia()->render($request, 'Policies/Index',
             [
-                'tenant' => $user->load(['policies.event.triggerable', 'policies.action_actor.actor', 'actors']),
+                'tenant' => $user->load([
+                    'policies.event.triggerable',
+                    'policies.action_actor.actor',
+                    'policies.actions.action',
+                    'actors'
+                ]),
                 'actions' => Action::all(),
                 'actor_types' => ActorType::all()
             ]
@@ -41,12 +46,19 @@ class PolicyController extends Controller
         ]);
         $action_actor_array = json_decode($request->get('action_actor'), true);
         foreach($action_actor_array as $action_actor){
-            $policy->action_actor()->create([
-                'action_id'=>$action_actor["action"]["id"],
-                'actor_id'=>$action_actor["actor"]["id"]
-            ]);
+            if (is_null($action_actor["actor"])) {
+                $policy->actions()->create([
+                    'action_id' => $action_actor["action"]["id"],
+                ]);
+            }
+            else {
+                $policy->action_actor()->create([
+                    'action_id' => $action_actor["action"]["id"],
+                    'actor_id' => $action_actor["actor"]["id"]
+                ]);
+            }
         }
-        return response()->json($policy->load('action_actor.actor', 'event'));
+        return response()->json($policy->load('action_actor.actor', 'event', 'actions.action'));
     }
 
 
@@ -65,7 +77,7 @@ class PolicyController extends Controller
             if (!is_array($event["answer"]))
                 continue;
 
-            $policy = $policy = $user->policies()->firstOrCreate([
+            $policy = $user->policies()->firstOrCreate([
                 'event_id' => $event["id"]
             ]);
 

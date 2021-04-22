@@ -76,7 +76,11 @@
             </div>
             <div class="flex flex-wrap -mx-3 mb-6" v-if="currentTab==='action'">
                 <div class="w-full px-3 mb-6 md:mb-0">
-                    <jet-button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-6" @click.prevent="showCreateActor = true">
+                    <jet-button
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-6"
+                        @click.prevent="showCreateActor = true"
+                        v-if="event.assignable"
+                    >
                         Add new actor
                     </jet-button>
 
@@ -88,7 +92,7 @@
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6" v-if="currentTab==='action'">
-                <div class="w-full md:w-2/5 px-3 mb-6 md:mb-0">
+                <div class="w-full md:w-2/5 px-3 mb-6 md:mb-0" v-if="event.assignable">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
                         Actor
                     </label>
@@ -106,12 +110,12 @@
                     <div class="relative">
                         <select v-model="currentAction" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
                             <option disabled value="">Choisissez</option>
-                            <option v-for="action in actions" :value="action">{{ action.name }}</option>
+                            <option v-for="action in availableActions" :value="action">{{ action.name }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0 m-auto" >
-                    <jet-button @click.prevent="addActionActorPair" :disabled="!(currentAction && currentActor)">
+                    <jet-button @click.prevent="addActionActorPair" :disabled="!(currentAction && (currentActor || !event.assignable))">
                         +
                     </jet-button>
                 </div>
@@ -122,8 +126,11 @@
                         Actions
                     </label>
                     <ul class="relative">
-                        <li v-for="action_actor in actionActorPairs">
+                        <li v-for="action_actor in actionActorPairs" v-if="event.assignable">
                             {{action_actor.action.name + ' ' + action_actor.actor.fullname}}
+                        </li>
+                        <li v-for="action_actor in actionActorPairs" v-else>
+                            {{action_actor.action.name}}
                         </li>
                     </ul>
                 </div>
@@ -180,6 +187,8 @@ export default {
             currentActor: null,
             currentAction: null,
             actionActorPairs: [],
+            event: null,
+            availableActions: []
 
         }
     },
@@ -269,7 +278,7 @@ export default {
             this.operators = this.values = null
             let events = this.events
             if (this.trigger){
-                events = this.events.filter((item)=> {
+                events = this.events.filter((item) => {
                     return item.triggerable_id === this.trigger.id
                 })
             }
@@ -313,6 +322,13 @@ export default {
                     })
                 )
             )
+        },
+        value: function (oldValue, newValue){
+            this.event = this.currentEvent().pop()
+            this.availableActions = this.actions.filter((item) => {
+                return item.assignable === this.event.assignable;
+            })
+            this.actionActorPairs = []
         }
     }
 }

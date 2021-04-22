@@ -15,10 +15,12 @@ class EventSeeder extends Seeder
      */
     public function run()
     {
+        // Assignable
         DB::table('events')->insert([
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('monitoring')->first()->id,
+                'assignable' => true,
                 'attribute' => 'heartbeat',
                 'operator' => '>',
                 'value' => '130',
@@ -27,6 +29,7 @@ class EventSeeder extends Seeder
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('monitoring')->first()->id,
+                'assignable' => true,
                 'attribute' => 'heartbeat',
                 'operator' => '<',
                 'value' => '60',
@@ -35,6 +38,7 @@ class EventSeeder extends Seeder
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('monitoring')->first()->id,
+                'assignable' => true,
                 'attribute' => 'bloodpressure',
                 'operator' => '==',
                 'value' => 'high',
@@ -43,6 +47,7 @@ class EventSeeder extends Seeder
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('monitoring')->first()->id,
+                'assignable' => true,
                 'attribute' => 'weight',
                 'operator' => '==',
                 'value' => 'strong increase',
@@ -51,6 +56,7 @@ class EventSeeder extends Seeder
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('monitoring')->first()->id,
+                'assignable' => true,
                 'attribute' => 'weight',
                 'operator' => '==',
                 'value' => 'strong decrease',
@@ -59,6 +65,7 @@ class EventSeeder extends Seeder
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('monitoring')->first()->id,
+                'assignable' => true,
                 'attribute' => 'sleep',
                 'operator' => '==',
                 'value' => 'anomalous',
@@ -67,6 +74,7 @@ class EventSeeder extends Seeder
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('motion')->first()->id,
+                'assignable' => true,
                 'attribute' => 'event',
                 'operator' => '==',
                 'value' => 'fall',
@@ -75,6 +83,7 @@ class EventSeeder extends Seeder
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('motion')->first()->id,
+                'assignable' => true,
                 'attribute' => 'event',
                 'operator' => '==',
                 'value' => 'inactive',
@@ -83,10 +92,31 @@ class EventSeeder extends Seeder
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('agenda')->first()->id,
+                'assignable' => true,
                 'attribute' => 'visit_last_month',
                 'operator' => '<',
                 'value' => '2',
                 'sentence' => 'vous n\'avez pas reçu de visite depuis longtemps'
+            ],
+        ]);
+        // Non-assignable
+        DB::table('events')->insert([
+            [
+                'triggerable_type' => Device::class,
+                'triggerable_id' => Device::whereName('door')->first()->id,
+                'assignable' => false,
+                'attribute' => 'status',
+                'operator' => '==',
+                'value' => 'opened',
+                'sentence' => 'la porte est ouverte'
+            ],[
+                'triggerable_type' => Device::class,
+                'triggerable_id' => Device::whereName('door')->first()->id,
+                'assignable' => false,
+                'attribute' => 'status',
+                'operator' => '==',
+                'value' => 'closed',
+                'sentence' => 'la porte est fermée'
             ],
         ]);
     }

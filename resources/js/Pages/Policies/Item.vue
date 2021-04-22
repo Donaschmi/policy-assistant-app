@@ -23,8 +23,17 @@
     <td class="px-6 py-4 whitespace-nowrap">
         <div class="flex items-center">
             <ul class="">
-                <li class="text-sm font-medium text-gray-900" v-for="action_actor in policy.action_actor">
+                <li class="text-sm font-medium text-gray-900"
+                    v-for="action_actor in policy.action_actor"
+                    v-if="policy.event.assignable"
+                >
                     {{ action_actor.action.name + ' ' + action_actor.actor.fullname}}
+                </li>
+                <li class="text-sm font-medium text-gray-900"
+                    v-for="action in policy.actions"
+                    v-else
+                >
+                    {{ action.action.name }}
                 </li>
             </ul>
         </div>

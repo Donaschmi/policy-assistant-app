@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -25,9 +26,14 @@ class Event extends Model
     protected $fillable = [
         'triggerable_type',
         'triggerable_id',
+        'assignable',
         'attribute',
         'operator',
         'value',
+    ];
+
+    protected $casts = [
+        'assignable' => 'boolean'
     ];
 
     protected static function boot()
@@ -44,5 +50,10 @@ class Event extends Model
     public function triggerable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function scopeAssignable(Builder $query)
+    {
+        return $query->where('assignable', 1);
     }
 }

@@ -26,6 +26,12 @@ class DeviceSeeder extends Seeder
             ],
             [
                 'name' => 'agenda'
+            ],
+            [
+                'name' => 'sensor'
+            ],
+            [
+                'name' => 'door'
             ]
         ]);
     }

@@ -54,9 +54,8 @@ class Policy extends Model
         return $this->hasMany(PolicyActionActor::class);
     }
 
-    public function actors(): HasManyThrough
+    public function actions(): HasMany
     {
-        return $this->hasManyThrough(Actor::class, PolicyActionActor::class);
+        return $this->hasMany(PolicyAction::class);
     }
-
 }

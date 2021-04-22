@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,8 +24,19 @@ class Action extends Model
      */
     protected $fillable = [
         'name',
+        'assignable',
+        'sentence'
     ];
+
+    protected $casts = [
+        'assignable' => 'boolean'
+    ];
+
 
     public $timestamps = false;
 
+    public function scopeAssignable(Builder $query)
+    {
+        return $query->where('assignable', 1);
+    }
 }

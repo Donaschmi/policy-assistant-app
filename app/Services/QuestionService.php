@@ -19,7 +19,7 @@ class QuestionService
      */
     public function generateRandomQuestions(User $user): ?Collection
     {
-        $availableEvents = $user->uncoveredEvents();
+        $availableEvents = $user->uncoveredEvents()->assignable()->get();
         if ($availableEvents->count() === 0){
             throw new NoEventsAvailableException();
         }
@@ -34,7 +34,7 @@ class QuestionService
                 $actors = $user->actors()->inRandomOrder()->take(2)->get();
                 $event->actor_1 = $actors[0];
                 $event->actor_2 = $actors[1];
-                $event->action = Action::inRandomOrder()->first();
+                $event->action = Action::assignable()->inRandomOrder()->first();
                 $event->sentence = str_replace(
                     array('{{ event }}', '{{ action }}', '{{ actor_1 }}', '{{ actor_2 }}'),
                     array($event->sentence, $event->action->sentence, $event->actor_1->sentence(), $event->actor_2->sentence()),
@@ -44,7 +44,7 @@ class QuestionService
             else
             {
                 $event->actor = $user->actors()->inRandomOrder()->first();
-                $event->action =  Action::inRandomOrder()->first();
+                $event->action =  Action::assignable()->inRandomOrder()->first();
                 $event->sentence = str_replace(
                     array('{{ event }}', '{{ action }}', '{{ actor }}'),
                     array($event->sentence, $event->action->sentence, $event->actor->sentence()),

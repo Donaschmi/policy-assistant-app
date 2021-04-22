@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -76,13 +77,13 @@ class User extends Authenticatable
         return $this->hasMany(Actor::class, 'tenant_id');
     }
 
-    public function uncoveredEvents(): Collection
+    public function uncoveredEvents(): Builder
     {
-        return Event::whereNotIn('id', $this->policies()->pluck('event_id'))->get();
+        return Event::whereNotIn('id', $this->policies()->pluck('event_id'));
     }
 
-    public function coveredEvents(): Collection
+    public function coveredEvents(): Builder
     {
-        return Event::whereIn('id', $this->policies()->pluck('event_id'))->get();
+        return Event::whereIn('id', $this->policies()->pluck('event_id'));
     }
 }
