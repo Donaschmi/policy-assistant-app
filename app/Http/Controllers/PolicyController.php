@@ -74,6 +74,7 @@ class PolicyController extends Controller
 
         foreach ($events as $event)
         {
+
             if (!is_array($event["answer"]))
                 continue;
 

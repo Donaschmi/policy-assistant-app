@@ -16,7 +16,8 @@ class CreateActorTypesTable extends Migration
         Schema::create('actor_types', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('sentence');
+            $table->string('intent')->nullable();
+            $table->string('sentence')->nullable();
         });
     }
 

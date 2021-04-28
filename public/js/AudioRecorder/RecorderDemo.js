@@ -1,5 +1,7 @@
 (function() {
     var $audioInLevel, $audioInSelect, $bufferSize, $cancel, $dateTime, $echoCancellation, $encoding, $encodingOption, $encodingProcess, $modalError, $modalLoading, $modalProgress, $record, $recording, $recordingList, $reportInterval, $testToneLevel, $timeDisplay, $timeLimit, BUFFER_SIZE, ENCODING_OPTION, MP3_BIT_RATE, OGG_KBPS, OGG_QUALITY, URL, audioContext, audioIn, audioInLevel, audioRecorder, defaultBufSz, disableControlsOnRecord, encodingProcess, iDefBufSz, minSecStr, mixer, onChangeAudioIn, onError, onGotAudioIn, onGotDevices, optionValue, plural, progressComplete, saveRecording, setProgress, startRecording, stopRecording, testTone, testToneLevel, updateBufferSizeText, updateDateTime;
+    var eventBus = window.eventBus
+    const recordTopic = eventBus.getTopic('record');
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
@@ -51,7 +53,7 @@
 
     $audioInLevel.attr('disabled', false);
 
-    $audioInLevel[0].valueAsNumber = 0;
+    $audioInLevel[0].valueAsNumber = 20;
 
     $testToneLevel.attr('disabled', false);
 
@@ -334,6 +336,7 @@
         html = ("<p recording='" + url + "'>") + ("<audio controls src='" + url + "'></audio> ") + ("(" + enc + ") " + (time.toString()) + " ") + ("<a class='btn btn-default' href='" + url + "' download='recording." + enc + "'>") + "Save..." + "</a> " + ("<button class='btn btn-danger' recording='" + url + "'>Delete</button>");
         "</p>";
         $recordingList.prepend($(html));
+        recordTopic.dispatch('saved', { blob: blob});
     };
 
     $recordingList.on('click', 'button', function(event) {
