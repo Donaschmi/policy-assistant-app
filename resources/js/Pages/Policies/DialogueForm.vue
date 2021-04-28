@@ -138,7 +138,7 @@ export default {
                     if (res.data.intent.name === "AnswerYes") {
                         question.answer = question.actor
                     }
-                    else if (res.data.intent.name === "AnswerNo") {
+                    else if (res.data.intent.name === "AnswerNon") {
                         question.answer = "Non"
                     }
                     else{
