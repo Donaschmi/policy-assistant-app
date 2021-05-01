@@ -9,7 +9,6 @@ import { InertiaProgress } from '@inertiajs/progress';
 import mitt from 'mitt';
 const emitter = mitt();
 const el = document.getElementById('app');
-
 const app = createApp({
     render: () =>
         h(InertiaApp, {

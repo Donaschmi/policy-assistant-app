@@ -27,7 +27,6 @@ class PolicyController extends Controller
                 'tenant' => $user->load([
                     'policies.event.triggerable',
                     'policies.action_actor.actor',
-                    'policies.actions.action',
                     'actors'
                 ]),
                 'actions' => Action::all(),
@@ -46,19 +45,12 @@ class PolicyController extends Controller
         ]);
         $action_actor_array = json_decode($request->get('action_actor'), true);
         foreach($action_actor_array as $action_actor){
-            if (is_null($action_actor["actor"])) {
-                $policy->actions()->create([
-                    'action_id' => $action_actor["action"]["id"],
-                ]);
-            }
-            else {
-                $policy->action_actor()->create([
-                    'action_id' => $action_actor["action"]["id"],
-                    'actor_id' => $action_actor["actor"]["id"]
-                ]);
-            }
+            $policy->action_actor()->create([
+                'action_id'=>$action_actor["action"]["id"],
+                'actor_id'=>$action_actor["actor"]["id"]
+            ]);
         }
-        return response()->json($policy->load('action_actor.actor', 'event', 'actions.action'));
+        return response()->json($policy->load('action_actor.actor', 'event'));
     }
 
 

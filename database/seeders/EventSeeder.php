@@ -20,103 +20,110 @@ class EventSeeder extends Seeder
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('monitoring')->first()->id,
-                'assignable' => true,
                 'attribute' => 'heartbeat',
                 'operator' => '>',
                 'value' => '130',
-                'sentence' => 'votre rythme cardiaque augmente anormalement'
+                'sentence' => 'votre rythme cardiaque augmente anormalement',
+                'mental_health' => 0,
+                'physical_health' => 3,
+                'reactivity' => 2,
+                'privacy' => 3
             ],
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('monitoring')->first()->id,
-                'assignable' => true,
                 'attribute' => 'heartbeat',
                 'operator' => '<',
                 'value' => '60',
-                'sentence' => 'votre rythme cardiaque diminue anormalement'
+                'sentence' => 'votre rythme cardiaque diminue anormalement',
+                'mental_health' => 0,
+                'physical_health' => 3,
+                'reactivity' => 2,
+                'privacy' => 3
             ],
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('monitoring')->first()->id,
-                'assignable' => true,
                 'attribute' => 'bloodpressure',
                 'operator' => '==',
                 'value' => 'high',
-                'sentence' => 'votre pression artérielle est anormalement haute'
+                'sentence' => 'votre pression artérielle est anormalement haute',
+                'mental_health' => 0,
+                'physical_health' => 3,
+                'reactivity' => 2,
+                'privacy' => 3
             ],
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('monitoring')->first()->id,
-                'assignable' => true,
                 'attribute' => 'weight',
                 'operator' => '==',
                 'value' => 'strong increase',
-                'sentence' => 'vous prenez beaucoup de poids'
+                'sentence' => 'vous prenez beaucoup de poids',
+                'mental_health' => 2,
+                'physical_health' => 3,
+                'reactivity' => 1,
+                'privacy' => 3
             ],
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('monitoring')->first()->id,
-                'assignable' => true,
                 'attribute' => 'weight',
                 'operator' => '==',
                 'value' => 'strong decrease',
-                'sentence' => 'vous perdez beaucoup de poids'
+                'sentence' => 'vous perdez beaucoup de poids',
+                'mental_health' => 2,
+                'physical_health' => 3,
+                'reactivity' => 1,
+                'privacy' => 3
             ],
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('monitoring')->first()->id,
-                'assignable' => true,
                 'attribute' => 'sleep',
                 'operator' => '==',
                 'value' => 'anomalous',
-                'sentence' => 'vous avez une période de sommeil anormale'
+                'sentence' => 'vous avez une période de sommeil anormale',
+                'mental_health' => 1,
+                'physical_health' => 1,
+                'reactivity' => 0,
+                'privacy' => 3
             ],
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('motion')->first()->id,
-                'assignable' => true,
                 'attribute' => 'event',
                 'operator' => '==',
                 'value' => 'fall',
-                'sentence' => 'vous chutez'
+                'sentence' => 'vous chutez',
+                'mental_health' => 0,
+                'physical_health' => 3,
+                'reactivity' => 3,
+                'privacy' => 0
             ],
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('motion')->first()->id,
-                'assignable' => true,
                 'attribute' => 'event',
                 'operator' => '==',
                 'value' => 'inactive',
-                'sentence' => 'vous restez dans une position inactive trop longtemps'
+                'sentence' => 'vous restez dans une position inactive trop longtemps',
+                'mental_health' => 1,
+                'physical_health' => 1,
+                'reactivity' => 1,
+                'privacy' => 0
             ],
             [
                 'triggerable_type' => Device::class,
                 'triggerable_id' => Device::whereName('agenda')->first()->id,
-                'assignable' => true,
                 'attribute' => 'visit_last_month',
                 'operator' => '<',
                 'value' => '2',
-                'sentence' => 'vous n\'avez pas reçu de visite depuis longtemps'
-            ],
-        ]);
-        // Non-assignable
-        DB::table('events')->insert([
-            [
-                'triggerable_type' => Device::class,
-                'triggerable_id' => Device::whereName('door')->first()->id,
-                'assignable' => false,
-                'attribute' => 'status',
-                'operator' => '==',
-                'value' => 'opened',
-                'sentence' => 'la porte est ouverte'
-            ],[
-                'triggerable_type' => Device::class,
-                'triggerable_id' => Device::whereName('door')->first()->id,
-                'assignable' => false,
-                'attribute' => 'status',
-                'operator' => '==',
-                'value' => 'closed',
-                'sentence' => 'la porte est fermée'
+                'sentence' => 'vous n\'avez pas reçu de visite depuis longtemps',
+                'mental_health' => 2,
+                'physical_health' => 0,
+                'reactivity' => 0,
+                'privacy' => 0
             ],
         ]);
     }

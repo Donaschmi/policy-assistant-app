@@ -16,11 +16,14 @@ class CreateEventsTable extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->morphs('triggerable');
-            $table->boolean('assignable')->default(false);
             $table->string('attribute');
             $table->string('operator');
             $table->string('value');
             $table->string('sentence');
+            $table->integer('mental_health')->default(0);
+            $table->integer('physical_health')->default(0);
+            $table->integer('reactivity')->default(0);
+            $table->integer('privacy')->default(0);
         });
     }
 

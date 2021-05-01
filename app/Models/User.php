@@ -77,13 +77,13 @@ class User extends Authenticatable
         return $this->hasMany(Actor::class, 'tenant_id');
     }
 
-    public function uncoveredEvents(): Builder
+    public function uncoveredEvents(): Collection
     {
-        return Event::whereNotIn('id', $this->policies()->pluck('event_id'));
+        return Event::whereNotIn('id', $this->policies()->pluck('event_id'))->get();
     }
 
-    public function coveredEvents(): Builder
+    public function coveredEvents(): Collection
     {
-        return Event::whereIn('id', $this->policies()->pluck('event_id'));
+        return Event::whereIn('id', $this->policies()->pluck('event_id'))->get();
     }
 }

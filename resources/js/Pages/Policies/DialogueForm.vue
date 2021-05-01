@@ -125,7 +125,8 @@ export default {
     },
     methods: {
         async sendRecord(arg) {
-            await axios.post("http://localhost:12101/api/speech-to-intent?outputFormat=rhasspy",
+            const uri = location.protocol + '//' + location.hostname + ':12101'
+            await axios.post(`${uri}/api/speech-to-intent?outputFormat=rhasspy`,
                 arg.blob, {
                     headers: {
                         'Content-Type': 'multipart/form-data'

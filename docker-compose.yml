@@ -3,7 +3,7 @@ version: '3'
 services:
     laravel.test:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.0
+            context: ./docker/8.0
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
@@ -35,6 +35,16 @@ services:
             - sail
         healthcheck:
           test: ["CMD", "mysqladmin", "ping"]
+    rhasspy:
+        image: "rhasspy/rhasspy"
+        container_name: rhasspy
+        restart: unless-stopped
+        volumes:
+            - "$HOME/.config/rhasspy/profiles:/profiles"
+            - "/etc/localtime:/etc/localtime:ro"
+        ports:
+            - "12101:12101"
+        command: --user-profiles /profiles --profile fr
 networks:
     sail:
         driver: bridge

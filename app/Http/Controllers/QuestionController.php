@@ -44,5 +44,24 @@ class QuestionController extends Controller
                 }
             }
         }
+        else if ($request->get('question_type') === 'best')
+        {
+            try {
+                $questions = $this->questionService->generateBestQuestion($user);
+                return response()->json($questions);
+            }
+            catch (Exception $exception)
+            {
+                if ($exception instanceof NoEventsAvailableException){
+                    return response()->json('event_missing', 404);
+                }
+                elseif ($exception instanceof NoActorsAvailableException){
+                    return response()->json('actor_missing', 404);
+                }
+                else {
+                    return response()->json([], 500);
+                }
+            }
+        }
     }
 }

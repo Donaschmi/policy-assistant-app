@@ -76,11 +76,7 @@
             </div>
             <div class="flex flex-wrap -mx-3 mb-6" v-if="currentTab==='action'">
                 <div class="w-full px-3 mb-6 md:mb-0">
-                    <jet-button
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-6"
-                        @click.prevent="showCreateActor = true"
-                        v-if="event.assignable"
-                    >
+                    <jet-button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-6" @click.prevent="showCreateActor = true">
                         Add new actor
                     </jet-button>
 
@@ -92,7 +88,7 @@
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6" v-if="currentTab==='action'">
-                <div class="w-full md:w-2/5 px-3 mb-6 md:mb-0" v-if="event.assignable">
+                <div class="w-full md:w-2/5 px-3 mb-6 md:mb-0">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
                         Actor
                     </label>
@@ -115,7 +111,7 @@
                     </div>
                 </div>
                 <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0 m-auto" >
-                    <jet-button @click.prevent="addActionActorPair" :disabled="!(currentAction && (currentActor || !event.assignable))">
+                    <jet-button @click.prevent="addActionActorPair" :disabled="!(currentAction && currentActor )">
                         +
                     </jet-button>
                 </div>
@@ -126,11 +122,8 @@
                         Actions
                     </label>
                     <ul class="relative">
-                        <li v-for="action_actor in actionActorPairs" v-if="event.assignable">
+                        <li v-for="action_actor in actions">
                             {{action_actor.action.name + ' ' + action_actor.actor.fullname}}
-                        </li>
-                        <li v-for="action_actor in actionActorPairs" v-else>
-                            {{action_actor.action.name}}
                         </li>
                     </ul>
                 </div>

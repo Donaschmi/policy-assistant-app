@@ -32,10 +32,6 @@ class Event extends Model
         'value',
     ];
 
-    protected $casts = [
-        'assignable' => 'boolean'
-    ];
-
     protected static function boot()
     {
         parent::boot();
@@ -50,10 +46,5 @@ class Event extends Model
     public function triggerable(): MorphTo
     {
         return $this->morphTo();
-    }
-
-    public function scopeAssignable(Builder $query)
-    {
-        return $query->where('assignable', 1);
     }
 }

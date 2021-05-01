@@ -15,10 +15,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ActionSeeder::class,
-            UserSeeder::class,
             DeviceSeeder::class,
             ActorTypeSeeder::class,
-            EventSeeder::class
+            EventSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }
