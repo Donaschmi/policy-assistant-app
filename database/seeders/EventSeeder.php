@@ -125,6 +125,18 @@ class EventSeeder extends Seeder
                 'reactivity' => 0,
                 'privacy' => 0
             ],
+            [
+                'triggerable_type' => Device::class,
+                'triggerable_id' => Device::whereName('sensor')->first()->id,
+                'attribute' => 'medication_last_taken',
+                'operator' => '>',
+                'value' => '2',
+                'sentence' => 'vous n\'avez pas pris vos médicaments',
+                'mental_health' => 2,
+                'physical_health' => 1,
+                'reactivity' => 1,
+                'privacy' => 2
+            ],
         ]);
     }
 }

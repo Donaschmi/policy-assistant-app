@@ -105,7 +105,9 @@ export default {
         return {
             questions: null,
             currQuestionIndex: 0,
-            utterance: null
+            utterance: null,
+            uri: location.protocol + '//' + location.hostname + ':12101',
+            attempt: 0
         }
     },
     computed: {
@@ -125,8 +127,7 @@ export default {
     },
     methods: {
         async sendRecord(arg) {
-            const uri = location.protocol + '//' + location.hostname + ':12101'
-            await axios.post(`${uri}/api/speech-to-intent?outputFormat=rhasspy`,
+            await axios.post(`${this.uri}/api/speech-to-intent?outputFormat=rhasspy`,
                 arg.blob, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
@@ -143,6 +144,7 @@ export default {
                         question.answer = "Non"
                     }
                     else{
+                        this.askRepeat()
                         return;
                     }
                 }
@@ -154,16 +156,19 @@ export default {
                         question.answer = question.actor_2
                     }
                     else {
+                        this.askRepeat()
                         return;
                     }
                 }
                 this.currQuestionIndex++
+                this.attempt = 0
+                this.playQuestion()
             }).catch(err => {
                 console.error({err});
             });
         },
         async fetchQuestions() {
-            axios.get(`/users/${this.tenant.id}/questions?question_type=random`)
+            axios.get(`/users/${this.tenant.id}/questions?question_type=best`)
                 .then(response => {
                     this.questions = response.data
                 }).catch(e => {
@@ -188,11 +193,26 @@ export default {
         playQuestion() {
             this.utterance.text = this.questions[this.currQuestionIndex].sentence
             speechSynthesis.speak(this.utterance);
+        },
+        askRepeat() {
+            this.attempt++
+            if (this.attempt === 3) {
+                this.repeatQuestion()
+                return;
+            }
+            this.utterance.text = "Je n'ai pas bien compris votre réponse, pouvez-vous répéter?"
+            speechSynthesis.speak(this.utterance);
+        },
+        repeatQuestion(){
+            this.utterance.text = "Je vais répéter la question."
+            speechSynthesis.speak(this.utterance);
+            this.attempt = 0
+            this.playQuestion()
         }
     },
     watch: {
         currQuestionIndex: function(oldValue, newValue) {
-            if (newValue === 2)
+            if (newValue === this.questions.length -1)
                 this.submit()
         }
     }

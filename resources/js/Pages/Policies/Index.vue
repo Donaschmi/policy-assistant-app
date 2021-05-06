@@ -136,10 +136,12 @@ export default {
             console.log(this.policies)
             this.policies.push(args.policy)
             this.showCreatePolicy = false
+            this.showDialogue = false
         },
         addPolicies(args){
             this.policies = this.policies.concat(args.policies)
             this.showRandomQuestions = false
+            this.showDialogue = false
         },
         removePolicy(args){
             let id = args.policy_id

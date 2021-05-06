@@ -35,6 +35,16 @@ services:
             - sail
         healthcheck:
           test: ["CMD", "mysqladmin", "ping"]
+    redis:
+        image: 'redis:alpine'
+        ports:
+            - '${FORWARD_REDIS_PORT:-6379}:6379'
+        volumes:
+            - 'sailredis:/data'
+        networks:
+            - sail
+        healthcheck:
+            test: [ "CMD", "redis-cli", "ping" ]
     rhasspy:
         image: "rhasspy/rhasspy"
         container_name: rhasspy
@@ -44,10 +54,13 @@ services:
             - "/etc/localtime:/etc/localtime:ro"
         ports:
             - "12101:12101"
+            - "12183:12183"
         command: --user-profiles /profiles --profile fr
 networks:
     sail:
         driver: bridge
 volumes:
     sailmysql:
+        driver: local
+    sailredis:
         driver: local

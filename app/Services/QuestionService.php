@@ -75,7 +75,7 @@ class QuestionService
         $usefulEvents =  $availableEvents->where('reactivity', $highest_reactivity);
         $sorted = $usefulEvents->sortByDesc('physical_health');
         $event = $sorted->first();
-        $event->action = Action::whereName('call')->first();
+        $event->action = Action::whereName('notify')->first();
         $event->actor = $user->actors()->orderBy('privacy', 'desc')->first();
         $event->sentence = str_replace(
             array('{{ event }}', '{{ action }}', '{{ actor }}'),
