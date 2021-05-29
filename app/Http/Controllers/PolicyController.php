@@ -7,6 +7,7 @@ use App\Models\Actor;
 use App\Models\ActorType;
 use App\Models\Policy;
 use App\Models\User;
+use App\Services\PolicyService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
@@ -14,14 +15,24 @@ use Laravel\Jetstream\Jetstream;
 
 class PolicyController extends Controller
 {
+
+    /**
+     * @var PolicyService
+     */
+    private $policyService;
+
+    public function __construct(PolicyService $policyService)
+    {
+        $this->policyService = $policyService;
+    }
+
     /**
      * @param Request $request
-     * @param $user
+     * @param User $user
      * @return Response
      */
     public function index(Request $request, User $user): Response
     {
-
         return Jetstream::inertia()->render($request, 'Policies/Index',
             [
                 'tenant' => $user->load([
@@ -31,6 +42,24 @@ class PolicyController extends Controller
                 ]),
                 'actions' => Action::all(),
                 'actor_types' => ActorType::all()
+            ]
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param User $user
+     * @return Response
+     */
+    public function assistant(Request $request, User $user): Response
+    {
+        return Jetstream::inertia()->render($request, 'Policies/VoiceAssistant',
+            [
+                'tenant' => $user->load([
+                    'policies.event.triggerable',
+                    'policies.action_actor.actor',
+                    'actors'
+                ])
             ]
         );
     }
@@ -54,7 +83,7 @@ class PolicyController extends Controller
     }
 
 
-    public function storeFromQuestion(Request $request, User $user): JsonResponse
+    public function storeFromQuestions(Request $request, User $user): JsonResponse
     {
         $request->validate([
             'events'=> ['required']
@@ -74,10 +103,12 @@ class PolicyController extends Controller
                 'event_id' => $event["id"]
             ]);
 
-            $policy->action_actor()->create([
-                'action_id' => $event["action"]["id"],
-                'actor_id' => $event["answer"]["id"]
-            ]);
+            foreach ($event["answer"] as $answer){
+                $policy->action_actor()->create([
+                    'action_id' => $event["action"]["id"],
+                    'actor_id' => $answer["id"]
+                ]);
+            }
 
             $policy->load('action_actor.actor', 'event');
 
@@ -86,9 +117,21 @@ class PolicyController extends Controller
         return response()->json(collect($policies));
     }
 
-    public function destroy(Request $request, Policy $policy)
+    public function storeFromQuestion(Request $request, User $user): JsonResponse
+    {
+        $request->validate([
+            'event'=> ['required']
+        ]);
+
+        $event = json_decode($request->get('event'), true);
+        $policy = $this->policyService->store($user, $event);
+        return response()->json($policy);
+    }
+
+    public function destroy(Request $request, Policy $policy): JsonResponse
     {
         $policy->delete();
         return response()->json([],200);
     }
+
 }

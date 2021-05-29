@@ -97,7 +97,7 @@ import JetButton from '@/Jetstream/Button'
 import JetDialogModal from '@/Jetstream/DialogModal'
 import CreateActorForm from "../Actors/CreateActorForm";
 export default {
-    props: ['tenant'],
+    props: ['tenant', 'question_type'],
     components: {
         JetButton
     },
@@ -138,9 +138,9 @@ export default {
                 console.log({res});
                 if (question.actor){
                     if (res.data.intent.name === "AnswerYes") {
-                        question.answer = question.actor
+                        question.answer = [question.actor]
                     }
-                    else if (res.data.intent.name === "AnswerNon") {
+                    else if (res.data.intent.name === "AnswerNo") {
                         question.answer = "Non"
                     }
                     else{
@@ -150,10 +150,17 @@ export default {
                 }
                 else{
                     if (res.data.intent.name === question.actor_1.actor_type.intent){
-                        question.answer = question.actor_1
+                        question.answer = [question.actor_1]
                     }
                     else if (res.data.intent.name === question.actor_2.actor_type.intent){
-                        question.answer = question.actor_2
+                        question.answer = [question.actor_2]
+                    }
+                    else if(res.data.intent.name === "AnswerYes"){
+                        this.askPrecision(question.actor_1, question.actor_2)
+                        return;
+                    }
+                    else if (res.data.intent.name === "AnswerBoth"){
+                        question.answer = [question.actor_1, question.actor_2]
                     }
                     else {
                         this.askRepeat()
@@ -168,7 +175,7 @@ export default {
             });
         },
         async fetchQuestions() {
-            axios.get(`/users/${this.tenant.id}/questions?question_type=best`)
+            axios.get(`/users/${this.tenant.id}/questions?question_type=${this.question_type}`)
                 .then(response => {
                     this.questions = response.data
                 }).catch(e => {
@@ -201,6 +208,10 @@ export default {
                 return;
             }
             this.utterance.text = "Je n'ai pas bien compris votre réponse, pouvez-vous répéter?"
+            speechSynthesis.speak(this.utterance);
+        },
+        askPrecision(actor1, actor2) {
+            this.utterance.text = `Voulez-vous que je prévienne ${actor1.actor_type.sentence} ou ${actor2.actor_type.sentence} ou les deux?`
             speechSynthesis.speak(this.utterance);
         },
         repeatQuestion(){

@@ -17,6 +17,7 @@ class CreateActorTypesTable extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('intent')->nullable();
+            $table->integer('privacy')->default(0);
             $table->string('sentence')->nullable();
         });
     }

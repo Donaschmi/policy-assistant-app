@@ -19,7 +19,6 @@ class CreateActorsTable extends Migration
             $table->foreignId('actor_type_id')->constrained('actor_types')->onDelete('cascade');
             $table->string('fullname')->nullable();
             $table->string('phone_number')->nullable();
-            $table->integer('privacy')->default(0);
             $table->softDeletes($column = 'deleted_at', $precision = 0);
             $table->timestamps();
         });

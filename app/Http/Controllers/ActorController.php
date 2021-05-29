@@ -16,6 +16,10 @@ class ActorController extends Controller
         {
             return response()->json($user->actors);
         }
+        elseif ($request->get('types'))
+        {
+            return response()->json(ActorType::all(['sentence', 'intent']));
+        }
         return Jetstream::inertia()->render($request, 'Actors/Index',
             [
                 'tenant' => $user->load(['actors']),

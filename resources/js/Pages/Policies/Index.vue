@@ -2,7 +2,7 @@
     <app-layout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ tenant.name }}'s policies
+                {{ tenant.name }}'s recordings
             </h2>
         </template>
 
@@ -22,21 +22,24 @@
                         </jet-button>
                         <jet-button
                             class="dropdown-item bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded text-black-50"
-                            @click.prevent="showRandomQuestions = true"
                             style="color:black!important"
+                            @click.prevent="showDialogue = true; question_type = 'random'"
                         >
                             Random questions
                         </jet-button>
                         <jet-button
                             class="dropdown-item bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded text-black-50"
                             style="color:black!important"
-                            @click.prevent="showDialogue = true"
+                            @click.prevent="showDialogue = true; question_type = 'best'"
                         >
-                            Dialogue
+                            Best question
                         </jet-button>
                     </div>
                     <inertia-link :href="route('user.actors', {user: tenant.id})" class="btn btn-primary mb-6 ml-6">
                         Actors
+                    </inertia-link>
+                    <inertia-link :href="route('user.recording', {user: tenant.id})" class="btn btn-primary mb-6 ml-6">
+                        Recording
                     </inertia-link>
                 </div>
                 <jet-dialog-modal :show="showCreatePolicy" @close="showCreatePolicy = false">
@@ -53,7 +56,7 @@
 
                 <jet-dialog-modal :show="showDialogue" @close="showDialogue = false">
                     <template #content>
-                        <dialogue-form :tenant="tenant" :actor_types="actor_types"/>
+                        <dialogue-form :tenant="tenant" :actor_types="actor_types" :question_type="question_type"/>
                     </template>
                 </jet-dialog-modal>
             </form>
@@ -121,7 +124,8 @@ export default {
             policies: [],
             showCreatePolicy: false,
             showRandomQuestions: false,
-            showDialogue: false
+            showDialogue: false,
+            question_type: 'random'
         }
     },
     created() {

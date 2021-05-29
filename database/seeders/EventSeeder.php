@@ -86,7 +86,7 @@ class EventSeeder extends Seeder
                 'sentence' => 'vous avez une période de sommeil anormale',
                 'mental_health' => 1,
                 'physical_health' => 1,
-                'reactivity' => 0,
+                'reactivity' => 1,
                 'privacy' => 3
             ],
             [
@@ -122,7 +122,7 @@ class EventSeeder extends Seeder
                 'sentence' => 'vous n\'avez pas reçu de visite depuis longtemps',
                 'mental_health' => 2,
                 'physical_health' => 0,
-                'reactivity' => 0,
+                'reactivity' => 1,
                 'privacy' => 0
             ],
             [

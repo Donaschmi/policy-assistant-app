@@ -47,8 +47,8 @@ class QuestionController extends Controller
         else if ($request->get('question_type') === 'best')
         {
             try {
-                $questions = $this->questionService->generateBestQuestion($user);
-                return response()->json($questions);
+                $question = $this->questionService->generateBestQuestion($user);
+                return response()->json($question);
             }
             catch (Exception $exception)
             {
@@ -59,7 +59,7 @@ class QuestionController extends Controller
                     return response()->json('actor_missing', 404);
                 }
                 else {
-                    return response()->json([], 500);
+                    return response()->json($exception, 500);
                 }
             }
         }
