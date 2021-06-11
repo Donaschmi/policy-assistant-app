@@ -50,7 +50,7 @@ class QuestionService
             {
                 $event->actor = $user->actors()->inRandomOrder()->first();
                 $event->action =  Action::inRandomOrder()->first();
-                $event->sentence = str_replace(
+                $event->question = str_replace(
                     array('{{ event }}', '{{ action }}', '{{ actor }}'),
                     array($event->sentence, $event->action->sentence, $event->actor->sentence()),
                     Question::single()
@@ -82,25 +82,38 @@ class QuestionService
         $sorted = $usefulEvents->sortByDesc('physical_health');
         $event = $sorted->first();
 
-        $topActorID = PolicyActionActor::whereIn('actor_id', $user->actors()->pluck('id'))
+        $topActorByPolicy = PolicyActionActor::whereIn('actor_id', $user->actors()->pluck('id'))
             ->selectRaw('actor_id, COUNT(*) as count')
             ->groupBy('actor_id')
             ->orderBy('count', 'desc')
-            ->first()->actor_id;
+            ->first();
+        if ($topActorByPolicy){
+            $topActor = Actor::find($topActorByPolicy->actor_id);
+        }
+        else {
+            $topActor = $user->actors()->with('actorType')
+                ->whereHas('actorType', function (Builder $query) use ($event) {
+                    $query->where('privacy', $event->privacy);
+                })
+                ->inRandomOrder()
+                ->first();
+            if (!$topActor){
+                $topActor = $user->actors()->inRandomOrder()->first();
+            }
+        }
 
-        $topActor = Actor::find($topActorID);
         $secondActor = null;
 
         if ($user->actors()->count() > 1) {
-            $secondActor = Actor::with('actorType')
-                ->where('id', '!=', $topActorID)
+            $secondActor = $user->actors()->with('actorType')
+                ->where('id', '!=', $topActor->id)
                 ->whereHas('actorType', function(Builder $query) use ($event){
                     $query->where('privacy', $event->privacy);
                 })
                 ->inRandomOrder()
                 ->first();
             if (!$secondActor){
-                $secondActor = Actor::where('id', '!=', $topActorID)->inRandomOrder()->first();
+                $secondActor = $user->actors()->where('id', '!=', $topActor->id)->inRandomOrder()->first();
             }
         }
 
@@ -109,7 +122,7 @@ class QuestionService
         $event->action = Action::where('reactivity', $event->reactivity)->first();
         if ($secondActor){
             $event->actor_2 = $secondActor;
-            $event->sentence = str_replace(
+            $event->question = str_replace(
                 array('{{ event }}', '{{ action }}', '{{ actor_1 }}', '{{ actor_2 }}'),
                 array($event->sentence,
                     $event->action->sentence,
@@ -119,7 +132,7 @@ class QuestionService
             );
         }
         else{
-            $event->sentence = str_replace(
+            $event->question = str_replace(
                 array('{{ event }}', '{{ action }}', '{{ actor }}'),
                 array($event->sentence, $event->action->sentence, $event->actor->sentence()),
                 Question::single()

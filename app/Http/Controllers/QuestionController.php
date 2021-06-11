@@ -22,6 +22,10 @@ class QuestionController extends Controller
         $this->questionService = $questionService;
     }
 
+    /**
+     * @throws NoEventsAvailableException
+     * @throws NoActorsAvailableException
+     */
     public function index(Request $request, User $user)
     {
         $request->validate(['question_type'=>'required']);
@@ -40,7 +44,7 @@ class QuestionController extends Controller
                     return response()->json('actor_missing', 404);
                 }
                 else {
-                    return response()->json([], 500);
+                    return throw $exception;
                 }
             }
         }
@@ -59,7 +63,7 @@ class QuestionController extends Controller
                     return response()->json('actor_missing', 404);
                 }
                 else {
-                    return response()->json($exception, 500);
+                    return throw $exception;
                 }
             }
         }
