@@ -1,6 +1,7 @@
 import sys
 import asyncio
 import requests
+import time
 from os import listdir, getcwd
 from os.path import isfile, join
 
@@ -22,11 +23,15 @@ def test_recognition(path, user):
     correct = 0
     wrong = 0
     path += user
+    total_time = 0
     print(f"{bcolors.HEADER}User tested: {user}{bcolors.ENDC}")
     for file in listdir(path):
         if file.endswith(".wav"):
             data = open(path + "/" + file, 'rb')
+            time_start = int(round(time.time() * 1000))
             r =  requests.post(url, data=data, headers=headers)
+            time_end = int(round(time.time() * 1000))
+            total_time += (time_end - time_start)
             recognized = r.json()["intent"]["name"]
             if (recognized == file.replace(".wav", "")):
                 correct += 1
@@ -44,6 +49,7 @@ def test_recognition(path, user):
     else:
         color= bcolors.WARNING
     print(f"{color}Recognition rate: {correct}/{total} {rate}%{bcolors.ENDC}")
+    print(f"{bcolors.OKCYAN}Average time: {total_time/total}{bcolors.ENDC}")
     return rate
 
 async def main():
