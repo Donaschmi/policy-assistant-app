@@ -6,6 +6,7 @@ use App\Models\Actor;
 use App\Models\ActorType;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Laravel\Jetstream\Jetstream;
 
 class ActorController extends Controller
@@ -42,6 +43,16 @@ class ActorController extends Controller
             'phone_number' => $request->get('phone_number'),
         ]);
         return response()->json($actor->load('actorType'));
+    }
+
+    public function other(Request $request, User $user)
+    {
+        $request->validate([
+            'event_id'=> ['required', 'int'],
+            'actors'=> ['required'],
+        ]);
+        $ids = explode(',', $request->actors);
+        return response()->json($user->actors()->whereNotIn('id', $ids)->limit(2)->get()->load('actorType'));
     }
 
     public function destroy(Request $request, Actor $actor)
