@@ -6,5 +6,10 @@ export const config = {
     CONFIRM: "confirm",
     SUBMITTED: "submitted",
     ANOTHER: "another",
+    ANOTHER_ACTION: "another_action",
+    ANOTHER_ACTOR: "another_actor",
+    ASK_ANOTHER_ACTION: "ask_another_action",
+    ASK_ANOTHER_ACTOR: "ask_another_actor",
+    ALTERNATIVE: "alternative",
 
 }

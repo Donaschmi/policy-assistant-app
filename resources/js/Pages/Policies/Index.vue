@@ -2,7 +2,7 @@
     <app-layout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ tenant.name }}'s recordings
+                Règles de sécurité de {{ tenant.name }}
             </h2>
         </template>
 
@@ -10,7 +10,7 @@
             <form>
                 <div class="dropdown">
                     <button class="btn btn-primary dropdown-toggle mb-6" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        New policy
+                        Nouvelle rêgle
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <jet-button
@@ -18,7 +18,7 @@
                             @click.prevent="showCreatePolicy = true"
                             style="color:black!important"
                         >
-                            Manual
+                            Manuelle
                         </jet-button>
                         <jet-button
                             class="dropdown-item bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded text-black-50"
@@ -36,10 +36,10 @@
                         </jet-button>
                     </div>
                     <inertia-link :href="route('user.actors', {user: tenant.id})" class="btn btn-primary mb-6 ml-6">
-                        Actors
+                        Acteurs
                     </inertia-link>
                     <inertia-link :href="route('user.recording', {user: tenant.id})" class="btn btn-primary mb-6 ml-6">
-                        Recording
+                        Test de voix
                     </inertia-link>
                 </div>
                 <jet-dialog-modal :show="showCreatePolicy" @close="showCreatePolicy = false">
@@ -102,7 +102,7 @@ import JetButton from '@/Jetstream/Button'
 import JetDangerButton from "../../Jetstream/DangerButton"
 import JetSecondaryButton from "../../Jetstream/SecondaryButton"
 import JetDialogModal from "../../Jetstream/DialogModal"
-import CreatePolicyForm from "./CreatePolicyForm"
+import CreatePolicyForm from "./CreatePolicyFormModal"
 import RandomQuestionsForm from "./RandomQuestionsForm"
 import DialogueForm from "./DialogueForm"
 

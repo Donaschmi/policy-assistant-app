@@ -13,7 +13,7 @@
         <div class="flex items-center">
             <div class="">
                 <a class="text-sm font-medium text-gray-900" href="#">
-                    {{ formatEvent(policy.event) }}
+                    Si {{ policy.event.sentence }}
                 </a>
             </div>
         </div>
@@ -24,7 +24,7 @@
         <div class="flex items-center">
             <ul class="">
                 <li class="text-sm font-medium text-gray-900" v-for="action_actor in policy.action_actor">
-                    {{ action_actor.action.name + ' ' + action_actor.actor.fullname}}
+                    {{ action_actor.action.sentence + ' ' + action_actor.actor.fullname}}
                 </li>
             </ul>
         </div>

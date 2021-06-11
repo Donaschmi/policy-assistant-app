@@ -3,7 +3,7 @@
         <div class="flex items-center">
             <div class="">
                 <div class="text-sm font-medium text-gray-900">
-                    {{ actor.actor_type.name }}
+                    {{ actor.actor_type.sentence }}
                 </div>
             </div>
         </div>

@@ -9,11 +9,11 @@
         <div class="flex flex-col px-60 pt-6">
             <form>
                 <jet-button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-6" @click.prevent="showCreateActor = true">
-                    New actor
+                    Nouvel acteur
                 </jet-button>
 
                 <inertia-link :href="route('user.policies', {user: tenant.id})" class="btn btn-primary ml-6 ">
-                    Policies
+                    Règles de sécurité
                 </inertia-link>
                 <jet-dialog-modal :show="showCreateActor" @close="showCreateActor = false">
                     <template #content>
@@ -31,10 +31,10 @@
                                     Type
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Name
+                                    Nom
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Phone number
+                                    Numéro de téléphone
                                 </th>
 
                                 <th scope="col" class="relative px-6 py-3">

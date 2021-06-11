@@ -4,7 +4,7 @@
             <div class="flex flex-wrap -mx-3 mb-2">
                 <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
-                        Actor type
+                        Relation
                     </label>
                     <div class="relative">
                         <select v-model="actor_id" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
@@ -14,18 +14,18 @@
                     </div>
                 </div>
                 <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                    <jet-label for="fullname" value="Full Name" />
+                    <jet-label for="fullname" value="Nom" />
                     <jet-input id="fullname" type="name" class="mt-1 block w-full" v-model="fullname" required/>
                 </div>
                 <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0" >
-                    <jet-label for="phone_number" value="Phone Number" />
+                    <jet-label for="phone_number" value="Numéro de téléphone" />
                     <jet-input id="phone_number" class="mt-1 block w-full" v-model="phone_number" required/>
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-2">
                 <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                     <jet-button :disabled="!(actor_id && fullname && phone_number)">
-                        Save
+                        Sauvegarder
                     </jet-button>
                 </div>
             </div>
